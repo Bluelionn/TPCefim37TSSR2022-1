@@ -1,0 +1,37 @@
+#import features
+import re
+import json
+
+#create list
+data = {}
+
+#Read file
+with open("access.txt", "r") as apache_parse:
+    parse = apache_parse.readlines()
+
+    #regex identification ip adresses and error code /  search ip in regex \d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}
+    #Numbers after two quotes .*?".*?" (\d{3})
+    reg_ip = r'^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}).*?".*?" (\d{3})'
+    
+    #second method, regex
+    #reg_ip = r'^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}).+\" (\d{3}) \d+ '
+
+    #Loop - add ip addresses in list
+
+    for line in parse:
+        out_addr = re.findall(reg_ip, line)[0][0]
+        data[out_addr] = {}
+    #add back codes in ip addresses and count
+    for line in parse:
+        out_addr, out_error = re.findall(reg_ip, line)[0]
+        if out_error not in data[out_addr]:
+            data[out_addr][out_error] = 1
+        else:
+            data[out_addr][out_error] += 1
+
+    data
+
+
+    #create json
+    with open("acc_log.json", "w") as json_parse:
+     json.dump(data, json_parse)
