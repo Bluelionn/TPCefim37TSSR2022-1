@@ -1,0 +1,14 @@
+#Before import modules, you must be install request and bs4 in use pip install
+
+import request
+from bs4 import BeautifulSoup
+
+#create the data list
+
+responses = []
+
+#Request
+req = requests.get("https://www.frameip.com/liste-des-ports-tcp-udp/")
+
+#Add to list 
+responses.append(req.content)
